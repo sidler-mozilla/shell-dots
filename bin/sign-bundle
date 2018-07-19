@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ -n "$DEBUG" ]; then
+    PS4=':${LINENO}+'
+    set -x
+fi
+
+BUNDLE="$1"
+RE_EMAIL="$2"
+MY_EMAIL="${3:-sidler@mozilla.com}"
+
+usage() {
+    echo "$0 <BUNDLE> <RE_EMAIL> [<MY_EMAIL>]"
+    echo
+    echo "  BUNDLE: path to the tar.gz bundle"
+    echo "  RE_EMAIL: email of the recipient; must have recv gpg key"
+    echo "  MY_EMAIL: email to sign with; must have gpg key"
+}
+
+if [ -z "$BUNDLE" ]; then
+    echo "BUNDLE=$BUNDLE"
+    usage
+    exit 1
+fi
+
+if [ -z "$RE_EMAIL" ]; then
+    echo "RE_EMAIL=$RE_EMAIL"
+    usage
+    exit 1
+fi
+
+gpg -u "$MY_EMAIL" -r "$RE_EMAIL" --sign --encrypt "$BUNDLE"

@@ -1,0 +1,3 @@
+#!/bin/bash
+AUTOCERT_SERVER="autocert1.private.mdc1.mozilla.com"
+rsync -avP --rsync-path="sudo rsync" "$AUTOCERT_SERVER:/data/autocert/certs/$1" .

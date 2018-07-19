@@ -1,0 +1,3 @@
+#!/bin/bash
+[ -n "$1" ] && ARG="--within $1"
+autocert query digicert ${ARG} | jq '.results | .[] | (.certificate.valid_till + " " + .certificate.common_name)' | xargs -I% echo % | sort
